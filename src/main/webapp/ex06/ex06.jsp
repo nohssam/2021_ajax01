@@ -14,27 +14,33 @@
    $(function() {
 	   $("#btn").click(function() {
 			$("#out").empty();
-			var table = "<table>";
-			table += "<thead>";
-			table += "<tr><td>번호</td><td>이름</td><td>나이</td><td>주소</td></tr>";
-			table += "</thead>";
-			table += "<tbody>";
-			
-			// jQuery에서 텍스트 읽기 : get
-			$.get("data_06.txt", function(data) {
-				var people = data.split("/");
-				for ( var k in people) {
-					table +="<tr>";
-					var people_info = people[k].split(",");
-					for ( var y in people_info) {
-						table += "<td>" + people_info[y] + "</td>";
+			$.ajax({
+				url : "data_06.txt",
+				method : "post",
+				dataType : "text",
+				success : function(data) {
+					var table = "<table>";
+					table += "<thead>";
+					table += "<tr><td>번호</td><td>이름</td><td>나이</td><td>주소</td></tr>";
+					table += "</thead>";
+					table += "<tbody>";
+					
+					var people = data.split("/");
+					for ( var k in people) {
+						table +="<tr>";
+						var people_info = people[k].split(",");
+						for ( var y in people_info) {
+							table += "<td>" + people_info[y] + "</td>";
+						}
+						table +="</tr>";
 					}
-					table +="</tr>";
+					table += "</tbody></table>";
+					$("#out").append(table);
+				},
+				error : function() {
+					alert("읽기실패");
 				}
-				table += "</tbody></table>";
-				$("#out").append(table);
-			});   
-			
+			});
 		});
    });
 </script>

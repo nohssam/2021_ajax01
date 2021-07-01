@@ -14,30 +14,36 @@
    $(function() {
 	   $("#btn").click(function() {
 			$("#out").empty();
-			var table = "<table>";
-			table += "<thead>";
-			table += "<tr><td>종류</td><td>가격</td></tr>";
-			table += "</thead>";
-			table += "<tbody>";
-			
-			// jQuery에서 json파일 읽기
-			$.getJSON("data_05.js", function(data) {
-				/* 
-				$.each(data, function(k, v) {
-					table += "<tr>";
-					table += "<td>"+ v["name"]  +"</td>" ;
-					table += "<td>"+ v["price"]  +"</td>" ;
-					table += "</tr>";
-				});
-				 */
-				$.each(data, function() {
-					table += "<tr>";
-					table += "<td>"+ this["name"]  +"</td>" ;
-					table += "<td>"+ this["price"]  +"</td>" ;
-					table += "</tr>";
-				});
-				table += "</tbody></table>";
-				$("#out").append(table);
+			$.ajax({
+				url : "data_05.js",
+				method : "post",
+				dataType : "json",
+				success : function(data) {
+					var table = "<table>";
+					table += "<thead>";
+					table += "<tr><td>종류</td><td>가격</td></tr>";
+					table += "</thead>";
+					table += "<tbody>";
+					/* 
+					$.each(data, function(k, v) {
+						table += "<tr>";
+						table += "<td>"+ v["name"]  +"</td>" ;
+						table += "<td>"+ v["price"]  +"</td>" ;
+						table += "</tr>";
+					});
+					 */
+					$.each(data, function() {
+						table += "<tr>";
+						table += "<td>"+ this["name"]  +"</td>" ;
+						table += "<td>"+ this["price"]  +"</td>" ;
+						table += "</tr>";
+					});
+					table += "</tbody></table>";
+					$("#out").append(table);
+				},
+				error : function() {
+					alert("읽기실패");
+				}
 			});
 		});
    });
